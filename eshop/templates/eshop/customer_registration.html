@@ -1,0 +1,16 @@
+{% extends 'eshop/eshop.html' %}
+
+
+{% block title %}
+Customer Registration
+{% endblock title %}
+
+{% block content %}
+<form method='POST'>
+    {% csrf_token %}
+    <h2>Customer Registration</h2>
+    <hr class="mt-0 mb-4">
+    {{ form.as_p }} <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock content %}

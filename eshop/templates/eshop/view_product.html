@@ -1,0 +1,37 @@
+{% extends 'eshop/eshop.html' %}
+{% load static %}
+                        
+<!--Product detais -->       
+{% block content %}  
+        </div>
+	  </div>
+	</nav>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <img src="{{ product_object.imageURL}}" />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">Brand: <strong>{{ product_object.brand }}</strong></div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">Size: <strong>{{ product_object.size }}</strong></div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">Color: <strong>{{ product_object.color }}</strong></div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">Price: <strong>€{{ product_object.price }}</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+ {% endblock %}

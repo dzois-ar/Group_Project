@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+<html>
+<head>
+	<title>HS</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+
+	<script type="text/javascript">
+		var user = '{{request.user}}'
+
+		function getToken(name) {
+		    var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = cookies[i].trim();
+		            // Does this cookie string begin with the name we want?
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+		var csrftoken = getToken('csrftoken')
+
+		function getCookie(name) {
+		    // Split cookie string and get all individual name=value pairs in an array
+		    var cookieArr = document.cookie.split(";");
+
+		    // Loop through the array elements
+		    for(var i = 0; i < cookieArr.length; i++) {
+		        var cookiePair = cookieArr[i].split("=");
+
+		        /* Removing whitespace at the beginning of the cookie name
+		        and compare it with the given string */
+		        if(name == cookiePair[0].trim()) {
+		            // Decode the cookie value and return
+		            return decodeURIComponent(cookiePair[1]);
+		        }
+		    }
+
+		    // Return null if not found
+		    return null;
+		}
+		var cart = JSON.parse(getCookie('cart'))
+
+		if (cart == undefined){
+			cart = {}
+			console.log('Cart Created!', cart)
+			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+		}
+		console.log('Cart:', cart)
+
+	</script>
+	<style>
+
+		/* Button used to open the chat form - fixed at the bottom of the page */
+		.open-button {
+		  background-color: white;
+		  color: white;
+		  padding: 20px 20px;
+		  border: none;
+			border-radius: 4px;
+		  cursor: pointer;
+		  opacity: 0.8;
+		  position: fixed;
+		  bottom: 23px;
+		  right: 28px;
+		  width: 80px;
+		}
+		.open-button:hover {
+			background-color: #a7a7a1;
+			outline: none;
+		  }
+
+
+		.fa {
+			padding: 20px;
+			font-size: 30px;
+			width: 50px;
+			text-align: center;
+			text-decoration: none;
+			margin: 5px 2px;
+			border-radius: 50%;
+		}
+
+		.fa:hover {
+			opacity: 0.7;
+		}
+
+		.fa-facebook {
+			background: #3B5998;
+			color: white;
+		}
+
+		.fa-twitter {
+			background: #55ACEE;
+			color: white;
+		}
+		.fa-instagram {
+			background: #125688;
+			color: white;
+			}
+		.small-btn {
+			width: 0px;
+			height: 0px;
+		}
+		</style>
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+	<!--Navbar-->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	  <a class="navbar-brand" href="{% url 'eshop:customer_user' %}">
+      	<img src="{% static  'images/logo.png' %}" alt="Logo" style="width:60px;">
+      </a>
+
+
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+		<!--Men filters and buttons-->
+		<ul class="nav nav-pills">
+			<div class="dropdown">
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Men
+				</button>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					<a href="/eshop/mens_tshirt_list/" class="dropdown-item">Tshirt </a><hr>
+					<a href="/eshop/mens_hoodies_list/" class="dropdown-item">Hoodies </a><hr>
+					<a href="/eshop/mens_jean_list/" class="dropdown-item">Jeans</a><hr>
+					<a href="/eshop/mens_coat_list/" class="dropdown-item">Coats</a>
+				</div>
+			</div>
+		</ul>
+		<!--Women filters and buttons-->
+		<ul class="nav nav-pills mr-auto">
+			<div class="dropdown">
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Women
+				</button>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					<a href="/eshop/women_tshirt_list/" class="dropdown-item">Tshirt </a><hr>
+					<a href="/eshop/women_hoodies_list/" class="dropdown-item">Hoodies </a><hr>
+					<a href="/eshop/women_jean_list/" class="dropdown-item">Jeans</a><hr>
+					<a href="/eshop/women_coat_list/" class="dropdown-item">Coats</a>
+				</div>
+			</div>
+		</ul>
+
+
+		<!--Search filter and button-->
+		<ul>
+			<div class="navbar-menu" id="main-navbar">
+				<div class="navbar-start" style="margin-right:auto;margin-left:-200;">
+					<div class="navbar-item">
+						<form id="search" method="get" action="{% url 'eshop:search' %}">
+							<div class="field has-addons">
+								<div class="control">
+									<input id="search-focus" type="text" class="input1" placeholder="Brand, Color, Price" name="query">
+									<button  class="button small-btn" type="submit">
+										<i class="fa fa-search"></i>
+								   </button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</ul>
+		<!--Chat button-->
+		<form action="{% url 'chat:home' %}" target="_blank">
+			<input class="open-button" type="image" src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Nuvola_apps_chat.svg" />
+		</form>
+	    <div class="form-inline my-2 my-lg-0">
+                <a href="{% url 'eshop:cart' %}">
+	    		<img  id="cart-icon" src="{% static 'images/cart.png' %}">
+	    		</a>
+	    		<p id="cart-total">{{cartItems}}</p>
+				<a href="/eshop/logout/" class="btn btn-danger">LogOut</a>
+	    </div>
+
+
+
+	  </div>
+	</nav>
+
+    <div class="container">
+            <br>
+            {% block content %}
+
+
+            {% endblock content %}
+    </div>
+	    <br><br>
+
+<!--Navbar for pagination-->
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center">
+					<li class="page-item disabled">
+
+						{% if products.has_previous %}
+					<li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+					<li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a>
+					</li>
+					{% endif %}
+
+					{% for i in nums %}
+					<li class="page-item"><a class="page-link"
+							href="?page={{ forloop.counter }}">{{forloop.counter}}</a></li>
+
+					{% endfor %}
+
+					{% if products.has_next %}
+					<li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
+					<li class="page-item"><a class="page-link"
+							href="?page={{ products.paginator.num_pages }}">Last&raquo</a></li>
+					{% endif %}
+					</li>
+				</ul>
+			</nav>
+			<footer class="bg-white">
+				<div class="container py-5">
+				  <div class="row py-4">
+					<div class="col-lg-4 col-md-6 mb-4 mb-lg-0"><img src="img/logo.png" alt="" width="180" class="mb-3">
+					  <p class="font-italic text-muted">Follow us on social media</p>
+					  <ul class="list-inline mt-4">
+						<li class="list-inline-item"><a href="https://el-gr.facebook.com/" class="fa fa-facebook" target="_blank" style:"margin-left: -400;"></i></a></li>
+						<li class="list-inline-item"><a href="https://www.instagram.com/" class="fa fa-instagram" target="_blank"></i></a></li>
+						<li class="list-inline-item"><a href="https://twitter.com/?lang=el" class="fa fa-twitter" target="_blank"></a></i></li>
+					  </ul>
+					</div>
+					<div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+					  <h6 class="text-uppercase font-weight-bold mb-4">Shop</h6>
+					  <ul class="list-unstyled mb-0">
+						<li class="mb-2"><a href="{% url 'eshop:customer_user' %}" class="text-muted">Our products</a></li>
+						<li class="mb-2"><a href="{% url 'chat:home' %}" target="_blank" class="text-muted">Chat</a></li>
+						<li class="mb-2"><a href="mailto:office@hs.com" class="text-muted">Email us!</a></li>
+					  </ul>
+					</div>
+					<div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+					  <h6 class="text-uppercase font-weight-bold mb-4">Company</h6>
+					  <ul class="list-unstyled mb-0">
+						<li class="mb-2"><a href="https://www.freeprivacypolicy.com/live/bca03ad6-0f84-43ea-b74c-cbb6ec486d71" target="_blank" class="text-muted">Return and Refund Policy</a></li>
+						<li class="mb-2"><a href="https://www.freeprivacypolicy.com/live/cdef8cf7-daba-46e6-bba4-d877280ea44b" target="_blank" class="text-muted">Privacy Policy</a></li>
+						<li class="mb-2"><a href="https://www.freeprivacypolicy.com/live/4d59ddb5-22ea-4537-a199-aeb657ea7930" target="_blank" class="text-muted">Disclaimer</a></li>
+					  </ul>
+					</div>
+					<div class="col-lg-4 col-md-6 mb-lg-0">
+					  <h6 class="text-uppercase font-weight-bold mb-4">About</h6>
+					  <p class="text-muted mb-4">Our clothes shop is active since 1994. Currently it holds a leading position in the Greek market while maintaining high growth both domestically and internationally.</p>
+
+					</div>
+				  </div>
+				</div>
+
+				<!-- Copyrights -->
+				<div class="bg-light py-4">
+				  <div class="container text-center">
+					<i class="fa fa-cc-mastercard fa-fw" style="font-size:48px;color:red"></i>
+					<i class="fa fa-cc-visa fa-fw" style="font-size:48px;color:blue"></i>
+					<i class="fa fa-paypal" style="font-size:48px;color:blue"></i>
+					<p class="text-muted mb-0 py-2">Copyright @2021 | Designed With Django by Vasilis Karamanis, Dimitris Zois, Rafailia Dimaki, Giorgos Areklakis</p>
+				  </div>
+				</div>
+			  </footer>
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+</body>
+
+
+
+</html>

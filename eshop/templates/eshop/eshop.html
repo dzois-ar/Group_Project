@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+	<title>HS</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">	
+	<style>
+		.fa {
+			padding: 20px;
+			font-size: 30px;
+			width: 50px;
+			text-align: center;
+			text-decoration: none;
+			margin: 5px 2px;
+			border-radius: 50%;
+		}
+		
+		.fa:hover {
+			opacity: 0.7;
+		}
+		
+		.fa-facebook {
+			background: #3B5998;
+			color: white;
+		}
+		
+		.fa-twitter {
+			background: #55ACEE;
+			color: white;
+		}
+		.fa-instagram {
+			background: #125688;
+			color: white;
+			}
+	</style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+<!--Navbar-->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="{% url 'eshop:eshop' %}">
+		<img src="{% static  'images/logo.png' %}" alt="Logo" style="width:60px;">
+		</a>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			
+				<!--Men filters and buttons-->
+				<ul class="nav nav-pills">
+					<div class="dropdown">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Men
+						</button>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							<a href="/eshop/mens_tshirt_list_base_page/" class="dropdown-item">Tshirt </a><hr>
+							<a href="/eshop/mens_hoodies_list_base_page/" class="dropdown-item">Hoodies </a><hr>
+							<a href="/eshop/mens_jean_list_base_page/" class="dropdown-item">Jeans</a><hr>
+							<a href="/eshop/mens_coat_list_base_page/" class="dropdown-item">Coats</a>
+						</div>
+					</div>
+				</ul>
+				<!--Women filters and buttons-->
+				<ul class="nav nav-pills">
+					<div class="dropdown">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Women
+						</button>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							<a href="/eshop/women_tshirt_list_base_page/" class="dropdown-item">Tshirt </a><hr>
+							<a href="/eshop/women_hoodies_list_base_page/" class="dropdown-item">Hoodies </a><hr>
+							<a href="/eshop/women_jean_list_base_page/" class="dropdown-item">Jeans</a><hr>
+							<a href="/eshop/women_coat_list_base_page/" class="dropdown-item">Coats</a>
+						</div>
+					</div>
+				</ul>
+			</div>
+			<!--SignUp-LogIn buttons-->
+			<div class="form-inline my-2 my-lg-0">
+						<span id="linkbar">
+							<a href="/eshop/customer_registration/" class="btn btn-info">SignUp</a>
+							<a href="/eshop/login/" class="btn btn-light">LogIn</a>
+						</span>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+		<br>
+		{% block content %}
+		<div class="row">
+		<!--Product list-->
+			{% for product in  products %}
+		<!--Product details-->
+			<div class="col-lg-4">
+				<img class="thumbnail" src="{{product.imageURL}}">
+				<div class="box-element product">
+
+					<h6><strong>Brand:{{product.brand}}</strong></h6>
+					<h6><strong>Size:{{product.size}}</strong></h6>
+					<h6><strong>Color:{{product.color}}</strong></h6>
+					<hr>
+					<a class="btn btn-outline-success" href="/eshop/{{ product.id }}">View</a>
+					<h3 style="display: inline-block; float: right"><strong>€{{product.price}}</strong></h3>
+				</div>
+			</div>
+			{% endfor %}
+			{% endblock content %}
+
+        </div>
+			<br><br>
+
+<!--pagination navbar-->
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center">
+					<li class="page-item disabled">
+
+						{% if products.has_previous %}
+					<li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+					<li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a>
+					</li>
+					{% endif %}
+
+					{% for i in nums %}
+					<li class="page-item"><a class="page-link"
+							href="?page={{ forloop.counter }}">{{forloop.counter}}</a></li>
+
+					{% endfor %}
+
+					{% if products.has_next %}
+					<li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
+					<li class="page-item"><a class="page-link"
+							href="?page={{ products.paginator.num_pages }}">Last&raquo</a></li>
+					{% endif %}
+					</li>
+				</ul>
+
+			</nav>
+			<br/>
+		
+			<footer class="bg-white">
+				<div class="container py-5">
+				  <div class="row py-4">
+					<div class="col-lg-4 col-md-6 mb-4 mb-lg-0"><img src="img/logo.png" alt="" width="180" class="mb-3">
+					  <p class="font-italic text-muted">Follow us on social media</p>
+					  <ul class="list-inline mt-4">					
+						<li class="list-inline-item"><a href="https://el-gr.facebook.com/" class="fa fa-facebook" target="_blank" style:"margin-left: -400;"></i></a></li>
+						<li class="list-inline-item"><a href="https://www.instagram.com/" class="fa fa-instagram" target="_blank"></i></a></li>
+						<li class="list-inline-item"><a href="https://twitter.com/?lang=el" class="fa fa-twitter" target="_blank"></a></i></li>
+					  </ul>
+					</div>
+					<div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+					  <h6 class="text-uppercase font-weight-bold mb-4">Shop</h6>
+					  <ul class="list-unstyled mb-0">
+						<li class="mb-2"><a href="{% url 'eshop:eshop' %}" class="text-muted">Our products</a></li>
+						<li class="mb-2"><a href="mailto:office@hs.com" class="text-muted">Email us!</a></li>
+					  </ul>
+					</div>
+					<div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+					  <h6 class="text-uppercase font-weight-bold mb-4">Company</h6>
+					  <ul class="list-unstyled mb-0">
+						<li class="mb-2"><a href="https://www.freeprivacypolicy.com/live/bca03ad6-0f84-43ea-b74c-cbb6ec486d71" target="_blank" class="text-muted">Return and Refund Policy</a></li>
+						<li class="mb-2"><a href="https://www.freeprivacypolicy.com/live/cdef8cf7-daba-46e6-bba4-d877280ea44b" target="_blank" class="text-muted">Privacy Policy</a></li>
+						<li class="mb-2"><a href="https://www.freeprivacypolicy.com/live/4d59ddb5-22ea-4537-a199-aeb657ea7930" target="_blank" class="text-muted">Disclaimer</a></li>
+					  </ul>
+					</div>
+					<div class="col-lg-4 col-md-6 mb-lg-0">
+					  <h6 class="text-uppercase font-weight-bold mb-4">About</h6>
+					  <p class="text-muted mb-4">Our clothes shop is active since 1994. Currently it holds a leading position in the Greek market while maintaining high growth both domestically and internationally.</p>
+					
+					</div>
+				  </div>
+				</div>
+			
+				<!-- Copyrights -->
+				<div class="bg-light py-4">
+				  <div class="container text-center">
+					<i class="fa fa-cc-mastercard fa-fw" style="font-size:48px;color:red"></i>
+					<i class="fa fa-cc-visa fa-fw" style="font-size:48px;color:blue"></i>
+					<i class="fa fa-paypal" style="font-size:48px;color:blue"></i>
+					<p class="text-muted mb-0 py-2">Copyright @2021 | Designed With Django by Vasilis Karamanis, Dimitris Zois, Rafailia Dimaki, Giorgos Areklakis</p>
+				  </div>
+				</div>
+			  </footer>
+
+			<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+				integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+				crossorigin="anonymous"></script>
+
+			<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+				integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+				crossorigin="anonymous"></script>
+
+			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+				integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+				crossorigin="anonymous"></script>
+
+			<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+</body>
+
+	
+
+</html>

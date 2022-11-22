@@ -1,0 +1,30 @@
+{% extends 'eshop/eshop.html' %}
+{% block title %}Login{% endblock%}
+
+<!--Login form--> 
+{% block linkbar %}
+    <a href="/eshop/customer_registration/"class="btn btn-warning">Sign up</a>
+{% endblock%}
+
+{% block content %}
+    <h1>Login</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" /> <br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" /> <br>
+        <br>
+        {% if empty_username %}
+            <div>{{ empty_username }}</div>
+        {% elif empty_password %}
+            <div>{{ empty_password }}</div>
+        {% elif invalid %}
+            <div>{{ invalid }}</div>
+        {% endif %}
+        <br>
+        <button type="submit">Login</button>
+    </form>
+{% endblock%}
