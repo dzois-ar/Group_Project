@@ -1,4 +1,4 @@
-# Group_Project
+# Ecommerce
 <p align="center">
    <img  src="static/images/logo.png" width="200" >
 </p>   
