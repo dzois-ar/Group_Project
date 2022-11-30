@@ -68,7 +68,7 @@ Website Keys and Passwords:
   2. You could place products to the cart and pay via Paypal or credit or debit card
   3. In the end of the page there is a chat icon, where you could contact as a customer with the eshop.
   
-  App Preview :
+ :camera: App Preview :
 -------------------------------------------------------------
 
 ![Screenshot from 2022-11-23 00-32-52](https://user-images.githubusercontent.com/80916754/203435008-f4e3761e-d502-49c1-87a1-40b53f0a67f7.png)
